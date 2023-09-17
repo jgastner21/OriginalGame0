@@ -7,12 +7,12 @@ Content/TinyDungeon/ - created by Kenney (https://kenney.nl/assets/tiny-dungeon)
 
 Content/TinyTown/ - created by Kenney (https://kenney.nl/assets/tiny-town) under creative commons
 
-Content/MedievalBG/ - created by stockgiu
-<https://www.freepik.com/free-vector/arcade-game-world-pixel-scene_4815167.htm#query=pixel%20stone&position=39&from_view=keyword&track=ais#position=39&query=pixel%20stone">
-Image by stockgiu</a> on Freepik
-
 Content/UserInterface/ - created by Crusenho (https://crusenho.itch.io/complete-gui-essential-pack) under creative commons
 
 Content/font/Alkhemical font - created by jeti (https://www.dafont.com/alkhemikal.font) licensed under creative commons
+
+Content/Ranger Base/ - created by Chr0ma Dave (https://chroma-dave.itch.io/fantasy-ranger-character) under creative commons
+
+Content/mystic_woods/ - created by Game Endeavor (https://game-endeavor.itch.io/mystic-woods) under creative commons
 
 //SOME OF THESE ARE UNUSED FOR NOW

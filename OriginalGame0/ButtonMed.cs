@@ -11,15 +11,6 @@ using OriginalGame0.Collision;
 
 namespace OriginalGame0
 {
-    /// <summary>
-    /// enum representing button state
-    /// </summary>
-    public enum Pressed
-    {
-        Off = 0,
-        Hover = 1,
-        Clicked = 2
-    }
 
     /// <summary>
     /// Represents the medium sized button
@@ -29,53 +20,74 @@ namespace OriginalGame0
         private Texture2D texture;
 
         /// <summary>
-        /// state of the button
-        /// </summary>
-        public Pressed pressed = Pressed.Off;
-
-        /// <summary>
         /// position of button
         /// </summary>
         public Vector2 Position;
 
+        /// <summary>
+        /// text of button
+        /// </summary>
+        public String Text;
+
         private Rectangle source = new Rectangle(16, 96, 64, 32);
+        
+        private SpriteFont alkhemikal;
+
+        /// <summary>
+        /// adjusted text pos (will change)
+        /// </summary>
+        public Vector2 textPosition;
 
         /// <summary>
         /// loads the button sprite
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager Content)
         {
-            texture = content.Load<Texture2D>("UserInterfaceButtons");
+            alkhemikal = Content.Load<SpriteFont>("Alkhemikal");
+            texture = Content.Load<Texture2D>("UserInterfaceButtons");
         }
 
         /// <summary>
-        /// Update the sprite direction and movement
+        /// Update the sprite
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
+        public bool Update(GameTime gameTime, MouseState currentMouseState)
         {
-
-            switch (pressed)
+            textPosition.X = Position.X + 30;
+            if (!(currentMouseState.X < Position.X || currentMouseState.X > Position.X + 128 ||
+            currentMouseState.Y < Position.Y || currentMouseState.Y > Position.Y + 64))
             {
-                case Pressed.Off:
-                    source.X = 16;
-                    source.Y = 96;
-                    source.Height = 32;
-                    Position.Y = 250;
-                    break;
-                case Pressed.Hover:
+                if (currentMouseState.LeftButton == ButtonState.Released)
+                {
+                    //Hover
                     source.X = 112;
                     source.Y = 130;
                     source.Height = 32;
                     Position.Y = 255;
-                    break;
-                case Pressed.Clicked:
+                    textPosition.Y = Position.Y + 7;
+                    return false;
+                }
+                else
+                {
+                    //Pressed
                     source.X = 16;
                     source.Y = 164;
                     source.Height = 28;
                     Position.Y = 259;
-                    break;
+                    textPosition.Y = Position.Y + 6;
+                    return true;
+                }
+            }
+            else
+            {
+                //Off
+                source.X = 16;
+                source.Y = 96;
+                source.Height = 32;
+                Position.Y = 250;
+                textPosition.Y = Position.Y + 8;
+                return false;
             }
         }
 
@@ -85,8 +97,9 @@ namespace OriginalGame0
         /// <param name="gameTime"></param>
         /// <param name="spriteBatch"></param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {;
+        {
             spriteBatch.Draw(texture, Position, source, Color.White, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(alkhemikal, Text, textPosition, Color.Red);
         }
     }
 }

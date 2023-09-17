@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace OriginalGame0.Collision
 {
-    /* UNUSED FOR NOW
     /// <summary>
     /// a bounding rectangle for collision
     /// </summary>
@@ -43,6 +42,6 @@ namespace OriginalGame0.Collision
             Width = width;
             Height = height;
         }
-    }*/
+    }
 }
     
