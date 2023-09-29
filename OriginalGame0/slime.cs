@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace OriginalGame0
 {
@@ -26,6 +27,7 @@ namespace OriginalGame0
         private Texture2D texture;
 
         private BoundingCircle bounds;
+
 
         /// <summary>
         /// Tells if the slime has been shot
@@ -63,7 +65,10 @@ namespace OriginalGame0
         /// <param name="spriteBatch">The spritebatch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (Killed) return;
+            if (Killed)
+            {
+                return;
+            }
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
             if (animationTimer > ANIMATION_SPEED)

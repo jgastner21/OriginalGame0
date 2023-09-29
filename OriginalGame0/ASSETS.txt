@@ -15,4 +15,10 @@ Content/Ranger Base/ - created by Chr0ma Dave (https://chroma-dave.itch.io/fanta
 
 Content/mystic_woods/ - created by Game Endeavor (https://game-endeavor.itch.io/mystic-woods) under creative commons
 
+Content/16-Bit Starter Pack/ - created by Bit By Bit (https://bit-by-bit-sound.itch.io/16-bit-starter-pack) royalty free (honestly really good find)
+
+Content/RPG_Essentials_Free/ created by leohpaz (https://leohpaz.itch.io/minifantasy-dungeon-sfx-pack) released under creative commons
+
+Content/arrowRelease.Wav created in Bfxr, by me
+
 //SOME OF THESE ARE UNUSED FOR NOW

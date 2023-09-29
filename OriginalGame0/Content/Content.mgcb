@@ -13,6 +13,24 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin 001_Hover_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:001_Hover_01.wav
+
+#begin 070_Equip_10.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:070_Equip_10.wav
+
+#begin 77_flesh_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:77_flesh_02.wav
+
 #begin Alkhemikal.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -27,6 +45,12 @@
 /processorParam:TextureFormat=Compressed
 /build:AlkhemikalTitle.spritefont
 
+#begin arrowRelease.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:arrowRelease.wav
+
 #begin backgroundColorForest.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -38,6 +62,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:backgroundColorForest.png
+
+#begin BattleLoop.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BattleLoop.ogg
 
 #begin Dungeon.png
 /importer:TextureImporter
@@ -62,6 +92,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HeavyArrow.png
+
+#begin Long Road Ahead.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Long Road Ahead.ogg
 
 #begin RangerBase.png
 /importer:TextureImporter

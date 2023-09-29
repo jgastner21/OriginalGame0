@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace OriginalGame0
 {
@@ -21,6 +23,11 @@ namespace OriginalGame0
         private Texture2D background;
         private Texture2D dungeonAtlas;
 
+        private Song BGM;
+        private Song battleMusic;
+
+        private SoundEffect Press;
+
         /// <summary>
         /// loads the scene
         /// </summary>
@@ -33,6 +40,14 @@ namespace OriginalGame0
             playButton.LoadContent(Content);
 
             alkhemikalTitle = Content.Load<SpriteFont>("AlkhemikalTitle");
+
+            Press = Content.Load<SoundEffect>("070_Equip_10");
+
+            battleMusic = Content.Load<Song>("BattleLoop");
+            BGM = Content.Load<Song>("Long Road Ahead");
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(BGM);
         }
 
         /// <summary>
@@ -43,10 +58,13 @@ namespace OriginalGame0
         {
 
             if(exitButton.Update(gameTime, currentMouseState)){
+                Press.Play();
                 game.Exit();
             }
             if (playButton.Update(gameTime, currentMouseState))
             {
+                Press.Play();
+                MediaPlayer.Play(battleMusic);
                 return Scene.Game;
             }
             return Scene.Main;

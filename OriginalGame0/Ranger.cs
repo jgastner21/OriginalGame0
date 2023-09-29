@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
+using System.IO;
 
 namespace OriginalGame0
 {
@@ -43,6 +45,10 @@ namespace OriginalGame0
         private bool drawn;
         private BoundingBox arrowBounds;
 
+        private SoundEffect shootsound;
+        private SoundEffect Death;
+
+
         /// <summary>
         /// loads the bat sprite
         /// </summary>
@@ -53,6 +59,9 @@ namespace OriginalGame0
             arrow = content.Load<Texture2D>("HeavyArrow");
             arrowPos = new Vector2(-20,-20);
             slimeSprite.LoadContent(content);
+            shootsound = content.Load<SoundEffect>("arrowRelease");
+            Death = content.Load<SoundEffect>("77_flesh_02");
+
         }
 
         /// <summary>
@@ -89,6 +98,7 @@ namespace OriginalGame0
                     float arrowY = (float)Math.Sin(rotation);
                     arrowRotation = rotation;
                     arrowVelocity = new Vector2(arrowX, arrowY) * arrowSpeed;
+                    shootsound.Play();
                 }
             }
 
@@ -99,6 +109,7 @@ namespace OriginalGame0
             {
                 arrowPos.X = 900;
                 slimeSprite.Killed = true;
+                Death.Play();
             }
 
 

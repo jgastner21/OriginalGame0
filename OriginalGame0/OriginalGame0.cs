@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 
 namespace OriginalGame0
@@ -30,6 +32,7 @@ namespace OriginalGame0
         MouseState currentMouseState;
 
         public Scene scene = Scene.Main;
+
 
         public OriginalGame0()
         {

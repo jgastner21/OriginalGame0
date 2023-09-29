@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Xna.Framework.Media;
 
 namespace OriginalGame0
 {
@@ -25,7 +26,6 @@ namespace OriginalGame0
         private SpriteFont alkhemikal;
 
 
-
         /// <summary>
         /// loads the scene
         /// </summary>
@@ -37,7 +37,6 @@ namespace OriginalGame0
             ranger.LoadContent(Content);
             Arrow = Content.Load<Texture2D>("HeavyArrow");
             alkhemikal = Content.Load<SpriteFont>("Alkhemikal");
-
 
         }
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OriginalGame0.Collision;
+using Microsoft.Xna.Framework.Audio;
 
 namespace OriginalGame0
 {
@@ -33,6 +34,9 @@ namespace OriginalGame0
         
         private SpriteFont alkhemikal;
 
+        private SoundEffect Hover;
+        private bool hoverOn = false;
+
         /// <summary>
         /// adjusted text pos (will change)
         /// </summary>
@@ -46,6 +50,7 @@ namespace OriginalGame0
         {
             alkhemikal = Content.Load<SpriteFont>("Alkhemikal");
             texture = Content.Load<Texture2D>("UserInterfaceButtons");
+            Hover = Content.Load<SoundEffect>("001_Hover_01");
         }
 
         /// <summary>
@@ -66,6 +71,11 @@ namespace OriginalGame0
                     source.Height = 32;
                     Position.Y = 255;
                     textPosition.Y = Position.Y + 7;
+                    if (!hoverOn)
+                    {
+                        hoverOn = true;
+                        Hover.Play();
+                    }
                     return false;
                 }
                 else
@@ -76,6 +86,7 @@ namespace OriginalGame0
                     source.Height = 28;
                     Position.Y = 259;
                     textPosition.Y = Position.Y + 6;
+                    hoverOn = false;
                     return true;
                 }
             }
@@ -87,6 +98,7 @@ namespace OriginalGame0
                 source.Height = 32;
                 Position.Y = 250;
                 textPosition.Y = Position.Y + 8;
+                hoverOn = false;
                 return false;
             }
         }
