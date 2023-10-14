@@ -48,6 +48,7 @@ namespace OriginalGame0
         private SoundEffect shootsound;
         private SoundEffect Death;
 
+        
 
         /// <summary>
         /// loads the bat sprite
@@ -74,7 +75,7 @@ namespace OriginalGame0
             direction = mousePos - Position;
             rotation = (float)Math.Atan2(direction.Y, direction.X);
 
-
+            slimeSprite.Update(gameTime);
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && currentMouseState.X > 64)
             {
@@ -92,6 +93,7 @@ namespace OriginalGame0
             {
                 if(currentMouseState.LeftButton == ButtonState.Released)
                 {
+                    
                     arrowPos = Position - new Vector2(0, 8);
                     drawn = false;
                     float arrowX = (float)Math.Cos(rotation);

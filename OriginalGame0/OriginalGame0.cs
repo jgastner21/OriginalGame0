@@ -29,6 +29,15 @@ namespace OriginalGame0
         private MainMenu mainMenu;
         private GameScene gameScene;
 
+        protected BlendState blendState = BlendState.AlphaBlend;
+
+        bool prev = true;
+
+        /// <summary>
+        /// Camera shake
+        /// </summary>
+        public Camera camera;
+
         MouseState currentMouseState;
 
         public Scene scene = Scene.Main;
@@ -48,6 +57,8 @@ namespace OriginalGame0
             // TODO: Add your initialization logic here
             mainMenu = new MainMenu();
             gameScene = new GameScene();
+
+            camera = new Camera();
 
             base.Initialize();
         }
@@ -74,6 +85,8 @@ namespace OriginalGame0
 
             currentMouseState = Mouse.GetState();
 
+            camera.Update(gameTime);
+
             // TODO: Add your update logic here
             if(scene == Scene.Main)
             {
@@ -98,14 +111,16 @@ namespace OriginalGame0
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here 800 x 480
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: camera.Transform, blendState: blendState);
             if(scene == Scene.Main)
             {
                 mainMenu.Draw(gameTime, spriteBatch, this.GraphicsDevice);
             }
             if(scene == Scene.Game)
             {
+                if (prev == true) camera.ApplyShake(.2f, 1f);
                 gameScene.Draw(gameTime, spriteBatch, this.GraphicsDevice);
+                prev = false;
             }           
 
             spriteBatch.End();

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using System.IO;
 
 namespace OriginalGame0
 {
@@ -27,6 +28,13 @@ namespace OriginalGame0
         private Texture2D texture;
 
         private BoundingCircle bounds;
+
+        private int animated = 0;
+        private bool started = false;
+
+        float currentAlpha = 1.0f;
+        float fadeSpeed = 0.02f;
+        bool isFading = false;
 
 
         /// <summary>
@@ -58,17 +66,28 @@ namespace OriginalGame0
             texture = content.Load<Texture2D>("slime");
         }
 
-        /// <summary>
-        /// Draws the animated sprite using the supplied SpriteBatch
-        /// </summary>
-        /// <param name="gameTime">The game time</param>
-        /// <param name="spriteBatch">The spritebatch to render with</param>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Update(GameTime gameTime)
         {
-            if (Killed)
+            if (isFading)
             {
-                return;
+                currentAlpha -= fadeSpeed;
+
+                if (currentAlpha <= 0)
+                {
+                    currentAlpha = 0;
+                    isFading = false;
+                }
             }
+        }
+
+            /// <summary>
+            /// Draws the animated sprite using the supplied SpriteBatch
+            /// </summary>
+            /// <param name="gameTime">The game time</param>
+            /// <param name="spriteBatch">The spritebatch to render with</param>
+            public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
             if (animationTimer > ANIMATION_SPEED)
@@ -76,6 +95,26 @@ namespace OriginalGame0
                 animationFrame++;
                 if (animationFrame > 3) animationFrame = 0;
                 animationTimer -= ANIMATION_SPEED;
+            }
+
+            if (Killed)
+            {
+                if (!started) animationFrame = 1;
+                
+                started = true;
+                var death = new Rectangle(animationFrame * 32 + 8, 132, 16, 16);
+                if (animated <=108)
+                {
+                    spriteBatch.Draw(texture, position, death, Color.Red, 0, Vector2.Zero, 3f, SpriteEffects.FlipHorizontally, 0);
+                    animated++;
+                }
+                else
+                {
+                    death = new Rectangle(4 * 32 + 8, 132, 16, 16);
+                    isFading = true;
+                    spriteBatch.Draw(texture, position, death, Color.Red * currentAlpha, 0, Vector2.Zero, 3f, SpriteEffects.FlipHorizontally, 0);
+                }
+                return;
             }
 
             var source = new Rectangle(animationFrame * 32 + 8, 12, 16, 16);

@@ -25,6 +25,7 @@ namespace OriginalGame0
 
         private SpriteFont alkhemikal;
 
+        private PauseMenu pauseMenu;
 
         /// <summary>
         /// loads the scene
@@ -47,7 +48,6 @@ namespace OriginalGame0
         public void Update(GameTime gameTime, MouseState currentMouseState, Game game)
         {
             ranger.Update(gameTime, currentMouseState);
-
         }
 
         /// <summary>
@@ -57,7 +57,6 @@ namespace OriginalGame0
         /// <param name="spriteBatch"></param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, GraphicsDevice game)
         {
-
             for (int i = 0; i < 6; i++)
             {
                 for(int j = 1; j < 5; j++)
@@ -68,6 +67,7 @@ namespace OriginalGame0
                 spriteBatch.DrawString(alkhemikal, "Esc to exit", new Vector2(6, 4), Color.Red, 0, new Vector2(0,0), 0.5f, SpriteEffects.None, 0);
                 ranger.Draw(gameTime, spriteBatch);
             }
+
         }
     }
 }
