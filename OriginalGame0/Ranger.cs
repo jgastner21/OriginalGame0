@@ -15,15 +15,17 @@ using System.IO;
 
 namespace OriginalGame0
 {
-    public class Arrow
+    public class Ranger
     {
         /// <summary>
         /// position of Ranger
         /// </summary>
         public Vector2 Position;
 
+        Random random = new Random();
+
         private Texture2D ranger;
-        private Texture2D arrow;
+
 
         private Slime slimeSprite = new Slime(new Vector2(600, 280));
 
@@ -38,12 +40,16 @@ namespace OriginalGame0
         private float rotation;
         private MouseState previousMouseState;
 
+        private List<Arrow> arrowList = new List<Arrow>();
+
+        private Texture2D arrowTexture;
         private Vector2 arrowPos;
         private Vector2 arrowVelocity;
         private const float arrowSpeed = 8.0f;
         private float arrowRotation;
-        private bool drawn;
         private BoundingBox arrowBounds;
+
+        private bool drawn;
 
         private SoundEffect shootsound;
         private SoundEffect Death;
@@ -51,17 +57,18 @@ namespace OriginalGame0
         
 
         /// <summary>
-        /// loads the bat sprite
+        /// loads the sprites
         /// </summary>
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             ranger = content.Load<Texture2D>("RangerBase");
-            arrow = content.Load<Texture2D>("HeavyArrow");
+            arrowTexture = content.Load<Texture2D>("HeavyArrow");
             arrowPos = new Vector2(-20,-20);
             slimeSprite.LoadContent(content);
             shootsound = content.Load<SoundEffect>("arrowRelease");
             Death = content.Load<SoundEffect>("77_flesh_02");
+
 
         }
 
@@ -93,33 +100,55 @@ namespace OriginalGame0
             {
                 if(currentMouseState.LeftButton == ButtonState.Released)
                 {
-                    
+
+
+
                     arrowPos = Position - new Vector2(0, 8);
                     drawn = false;
                     float arrowX = (float)Math.Cos(rotation);
                     float arrowY = (float)Math.Sin(rotation);
                     arrowRotation = rotation;
                     arrowVelocity = new Vector2(arrowX, arrowY) * arrowSpeed;
+
+                    arrowList.Add(new Arrow(arrowPos, arrowVelocity, arrowRotation));
+
                     shootsound.Play();
                 }
             }
 
-            arrowPos += arrowVelocity;
+            //arrowPos += arrowVelocity;
             //Debug.WriteLine("X: "+arrowPos.X + " Y: " + arrowPos.Y);
 
-            if(arrowPos.X >= 600 && arrowPos.X <= 648 && arrowPos.Y <= 310 && arrowPos.Y >= 240)
+            for(int i = 0; i < arrowList.Count(); i++)
             {
-                arrowPos.X = 900;
-                slimeSprite.Killed = true;
-                Death.Play();
+                arrowList[i].Update(gameTime);
+
+                if (arrowList[i].arrowPos.X >= 400 && arrowList[i].arrowPos.X <= 448 && arrowList[i].arrowPos.Y <= 380 && arrowList[i].arrowPos.Y >= 160)
+                {
+                    arrowList.Add(new Arrow(new Vector2(arrowList[i].arrowPos.X + random.Next(-15,16), arrowList[i].arrowPos.Y + random.Next(-15, 16)), arrowList[i].arrowVelocity, arrowList[i].arrowRotation + (float)random.NextDouble() - 0.5f));
+                }
+
+                if (arrowList[i].arrowPos.X >= 600 && arrowList[i].arrowPos.X <= 648 && arrowList[i].arrowPos.Y <= 310 && arrowList[i].arrowPos.Y >= 240)
+                {
+                    arrowList[i].enable = false;
+                    slimeSprite.Killed = true;
+                    Death.Play();
+                }
             }
+
+            //if(arrowPos.X >= 600 && arrowPos.X <= 648 && arrowPos.Y <= 310 && arrowPos.Y >= 240)
+            //{
+            //    arrowPos.X = 900;
+            //    slimeSprite.Killed = true;
+            //    Death.Play();
+            //}
 
 
             previousMouseState = currentMouseState;
         }
 
         /// <summary>
-        /// Draw the bat
+        /// Draw the sprites
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="spriteBatch"></param>
@@ -158,7 +187,11 @@ namespace OriginalGame0
             }
 
             spriteBatch.Draw(ranger, Position, source, Color.White, rotation, new Vector2(8,16), 2.0f, SpriteEffects.None, 0);
-            spriteBatch.Draw(arrow, arrowPos, null, Color.White, arrowRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+            foreach (Arrow arrow in arrowList)
+            {
+                arrow.Draw(gameTime, spriteBatch, arrowTexture);
+            }
+            //spriteBatch.Draw(arrow, arrowPos, null, Color.White, arrowRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
             slimeSprite.Draw(gameTime, spriteBatch);
         }
     }

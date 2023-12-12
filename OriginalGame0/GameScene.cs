@@ -20,10 +20,11 @@ namespace OriginalGame0
 
         private Texture2D tinyTown;
         private Texture2D dungeonAtlas;
-        private Arrow ranger = new Arrow() {Position = new Vector2(64, 280) };
+        private Ranger ranger = new Ranger() {Position = new Vector2(64, 280) };
         private Texture2D Arrow;
 
         private SpriteFont alkhemikal;
+
 
         private PauseMenu pauseMenu;
 
@@ -66,6 +67,7 @@ namespace OriginalGame0
                 spriteBatch.Draw(dungeonAtlas, new Vector2(134 * i, -8), new Rectangle(0, 377, 64, 56), Color.White, 0, new Vector2(0, 0), 2.1f, SpriteEffects.None, 0);
                 spriteBatch.DrawString(alkhemikal, "Esc to exit", new Vector2(6, 4), Color.Red, 0, new Vector2(0,0), 0.5f, SpriteEffects.None, 0);
                 ranger.Draw(gameTime, spriteBatch);
+
             }
 
         }

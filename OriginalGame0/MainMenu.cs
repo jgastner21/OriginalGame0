@@ -89,7 +89,7 @@ namespace OriginalGame0
             exitButton.Draw(gameTime, spriteBatch);
             playButton.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(alkhemikalTitle, "RUNGEON", new Vector2(245, 80), Color.Red);//Text
+            spriteBatch.DrawString(alkhemikalTitle, "CORRUPT", new Vector2(300, 0), Color.Red, 1, new Vector2(0,0), 1.0f, SpriteEffects.None, 0);//Text
         }
     }
 }
