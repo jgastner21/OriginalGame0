@@ -25,7 +25,7 @@ namespace OriginalGame0
         Random random = new Random();
 
         private Texture2D ranger;
-
+        private Texture2D wallTexture;
 
         private Slime slimeSprite = new Slime(new Vector2(600, 280));
 
@@ -41,6 +41,11 @@ namespace OriginalGame0
         private MouseState previousMouseState;
 
         private List<Arrow> arrowList = new List<Arrow>();
+        private List<Wall> baseWalls = new List<Wall>();
+        private List<Wall> lvl1Walls = new List<Wall>();
+        private List<Wall> lvl2Walls = new List<Wall>();
+        private List<Wall> lvl3Walls = new List<Wall>();
+
 
         private Texture2D arrowTexture;
         private Vector2 arrowPos;
@@ -54,7 +59,9 @@ namespace OriginalGame0
         private SoundEffect shootsound;
         private SoundEffect Death;
 
+        private int level = 1;
         
+
 
         /// <summary>
         /// loads the sprites
@@ -64,12 +71,28 @@ namespace OriginalGame0
         {
             ranger = content.Load<Texture2D>("RangerBase");
             arrowTexture = content.Load<Texture2D>("HeavyArrow");
-            arrowPos = new Vector2(-20,-20);
             slimeSprite.LoadContent(content);
+            wallTexture = content.Load<Texture2D>("Dungeon");
             shootsound = content.Load<SoundEffect>("arrowRelease");
             Death = content.Load<SoundEffect>("77_flesh_02");
 
+            #region level walls
 
+            //Side walls
+            for (int i = -1; i < 24; i++)
+            {
+                baseWalls.Add(new Wall(new Vector2(i * 38, 0), 0));
+                baseWalls.Add(new Wall(new Vector2(i * 38, 440), 0));
+            }
+
+            //Level 1 walls
+            for (int i = 0; i < 3; i++)
+            {
+                lvl1Walls.Add(new Wall(new Vector2(228, 38 * i + 38), 0));
+                lvl1Walls.Add(new Wall(new Vector2(492, 297 + i * 38), 0));
+            }
+
+            #endregion level walls
         }
 
         /// <summary>
@@ -81,6 +104,8 @@ namespace OriginalGame0
             mousePos = new Vector2(currentMouseState.X, currentMouseState.Y);
             direction = mousePos - Position;
             rotation = (float)Math.Atan2(direction.Y, direction.X);
+
+            Debug.WriteLine(rotation);
 
             slimeSprite.Update(gameTime);
 
@@ -119,29 +144,75 @@ namespace OriginalGame0
             //arrowPos += arrowVelocity;
             //Debug.WriteLine("X: "+arrowPos.X + " Y: " + arrowPos.Y);
 
+
+            //I used a for loop to be able to manipulate the List while iterating through it
+            //and decided not to swap back to a foreach loop.
             for(int i = 0; i < arrowList.Count(); i++)
             {
                 arrowList[i].Update(gameTime);
 
-                if (arrowList[i].arrowPos.X >= 400 && arrowList[i].arrowPos.X <= 448 && arrowList[i].arrowPos.Y <= 380 && arrowList[i].arrowPos.Y >= 160)
-                {
-                    arrowList.Add(new Arrow(new Vector2(arrowList[i].arrowPos.X + random.Next(-15,16), arrowList[i].arrowPos.Y + random.Next(-15, 16)), arrowList[i].arrowVelocity, arrowList[i].arrowRotation + (float)random.NextDouble() - 0.5f));
-                }
-
-                if (arrowList[i].arrowPos.X >= 600 && arrowList[i].arrowPos.X <= 648 && arrowList[i].arrowPos.Y <= 310 && arrowList[i].arrowPos.Y >= 240)
+                if(!slimeSprite.Killed && slimeSprite.Bounds.CollidesWith(arrowList[i].arrowBounds))
                 {
                     arrowList[i].enable = false;
                     slimeSprite.Killed = true;
                     Death.Play();
                 }
-            }
+                if (level == 1 || level == 3)
+                {
+                    foreach (Wall wall in baseWalls)
+                    {
+                        if (wall.wallBounds.CollidesWith(arrowList[i].arrowBounds))
+                        {
+                            float angle = (float)Math.Atan2(wall.wallPosition.Y + 20 - arrowList[i].arrowPos.Y, wall.wallPosition.X + 20 - arrowList[i].arrowPos.X);
+                            //Debug.WriteLine(angle);
+                            if (angle > 0.7853f && angle < 2.3561)
+                            {
+                                arrowList[i].arrowVelocity.Y *= -1;
+                            }
+                            else if (angle >= 2.3561 || angle <= -2.3561)
+                            {
+                                arrowList[i].arrowVelocity.X *= -1;
+                            }
+                            else if (angle <= 0.7853f && angle >= -0.7853)
+                            {
+                                arrowList[i].arrowVelocity.X *= -1;
+                            }
+                            else if (angle < -0.7853 && angle > -2.3561)
+                            {
+                                arrowList[i].arrowVelocity.Y *= -1;
+                            }
+                        }
+                    }
+                }
+                if (level == 1)
+                {
+                    foreach (Wall wall in lvl1Walls)
+                    {
+                        if (wall.wallBounds.CollidesWith(arrowList[i].arrowBounds))
+                        {
+                            float angle = (float)Math.Atan2(wall.wallPosition.Y + 20 - arrowList[i].arrowPos.Y, wall.wallPosition.X + 20 - arrowList[i].arrowPos.X);
+                            //Debug.WriteLine(angle);
+                            if (angle > 0.7853f && angle < 2.3561)
+                            {
+                                arrowList[i].arrowVelocity.Y *= -1;
+                            }
+                            else if (angle >= 2.3561 || angle <= -2.3561)
+                            {
+                                arrowList[i].arrowVelocity.X *= -1;
+                            }
+                            else if (angle <= 0.7853f && angle >= -0.7853)
+                            {
+                                arrowList[i].arrowVelocity.X *= -1;
+                            }
+                            else if (angle < -0.7853 && angle > -2.3561)
+                            {
+                                arrowList[i].arrowVelocity.Y *= -1;
+                            }
+                        }
+                    }
+                }
 
-            //if(arrowPos.X >= 600 && arrowPos.X <= 648 && arrowPos.Y <= 310 && arrowPos.Y >= 240)
-            //{
-            //    arrowPos.X = 900;
-            //    slimeSprite.Killed = true;
-            //    Death.Play();
-            //}
+            }
 
 
             previousMouseState = currentMouseState;
@@ -186,13 +257,44 @@ namespace OriginalGame0
                 source = new Rectangle(animationFrame * 48 + 12, 144 * action + 16, 32, 32);
             }
 
+
             spriteBatch.Draw(ranger, Position, source, Color.White, rotation, new Vector2(8,16), 2.0f, SpriteEffects.None, 0);
             foreach (Arrow arrow in arrowList)
             {
                 arrow.Draw(gameTime, spriteBatch, arrowTexture);
             }
+            if (level == 1 || level == 3)
+            {
+                foreach (Wall wall in baseWalls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            if (level == 1)
+            {
+                foreach(Wall wall in lvl1Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 2)
+            {
+                foreach (Wall wall in lvl2Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 3)
+            {
+                foreach (Wall wall in lvl3Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+
             //spriteBatch.Draw(arrow, arrowPos, null, Color.White, arrowRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
             slimeSprite.Draw(gameTime, spriteBatch);
+
         }
     }
 }

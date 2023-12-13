@@ -31,7 +31,6 @@ namespace OriginalGame0
 
         protected BlendState blendState = BlendState.AlphaBlend;
 
-        Cube cube;
 
         bool prev = true;
 
@@ -72,7 +71,6 @@ namespace OriginalGame0
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            cube = new Cube(this);
 
             mainMenu.LoadContent(Content);
             gameScene.LoadContent(Content);
@@ -99,7 +97,6 @@ namespace OriginalGame0
             if(scene == Scene.Game)
             {
                 gameScene.Update(gameTime, currentMouseState, this);
-                cube.Update(gameTime);
             }
 
 
@@ -127,7 +124,6 @@ namespace OriginalGame0
                 if (prev == true) camera.ApplyShake(.2f, 1f);
                 gameScene.Draw(gameTime, spriteBatch, this.GraphicsDevice);
                 spriteBatch.End();
-                cube.Draw();
                 prev = false;
             }           
 

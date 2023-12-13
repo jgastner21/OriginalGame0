@@ -54,7 +54,7 @@ namespace OriginalGame0
         public Slime(Vector2 position)
         {
             this.position = position;
-            this.bounds = new BoundingCircle(position + new Vector2(8, 8), 8);
+            this.bounds = new BoundingCircle(position + new Vector2(8, 8), 16);
         }
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace OriginalGame0
 
         public void Update(GameTime gameTime)
         {
+
             if (isFading)
             {
                 currentAlpha -= fadeSpeed;

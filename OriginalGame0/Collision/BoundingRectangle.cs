@@ -42,6 +42,11 @@ namespace OriginalGame0.Collision
             Width = width;
             Height = height;
         }
+
+        public bool CollidesWith(BoundingRectangle other)
+        {
+            return CollisionHelper.Collides(this, other);
+        }
     }
 }
     
