@@ -26,7 +26,7 @@ namespace OriginalGame0
             wallPosition = pos;
 
             wallRotation = rotation;
-            wallBounds = new BoundingRectangle(new Vector2(wallPosition.X, wallPosition.Y), 39, 39);
+            wallBounds = new BoundingRectangle(new Vector2(wallPosition.X, wallPosition.Y + 16), 39, 39);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace OriginalGame0
         {
             if (enable)
             {
-                spriteBatch.Draw(wallTexture, wallPosition, new Rectangle(6, 83, 32, 44), Color.White, wallRotation, Vector2.Zero, 1.21f, SpriteEffects.None, 0);
+                spriteBatch.Draw(wallTexture, wallPosition, new Rectangle(6, 83, 32, 42), Color.White, wallRotation, Vector2.Zero, 1.21f, SpriteEffects.None, 0);
                 spriteBatch.Draw(wallTexture, new Vector2(wallPosition.X, wallPosition.Y), new Rectangle(63, 377, 33, 7), Color.White, wallRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
                 spriteBatch.Draw(wallTexture, new Vector2(wallPosition.X, wallPosition.Y), new Rectangle(96, 384, 7, 32), Color.White, wallRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
                 spriteBatch.Draw(wallTexture, new Vector2(wallPosition.X, wallPosition.Y + 32), new Rectangle(63, 409, 40, 7), Color.White, wallRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);

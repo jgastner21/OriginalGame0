@@ -50,7 +50,7 @@ namespace OriginalGame0
         private Texture2D arrowTexture;
         private Vector2 arrowPos;
         private Vector2 arrowVelocity;
-        private const float arrowSpeed = 8.0f;
+        private const float arrowSpeed = 4.0f;
         private float arrowRotation;
         private BoundingBox arrowBounds;
 
@@ -58,6 +58,8 @@ namespace OriginalGame0
 
         private SoundEffect shootsound;
         private SoundEffect Death;
+
+        private SpriteFont alkhemikal;
 
         private int level = 1;
         
@@ -75,6 +77,7 @@ namespace OriginalGame0
             wallTexture = content.Load<Texture2D>("Dungeon");
             shootsound = content.Load<SoundEffect>("arrowRelease");
             Death = content.Load<SoundEffect>("77_flesh_02");
+            alkhemikal = content.Load<SpriteFont>("Alkhemikal");
 
             #region level walls
 
@@ -86,13 +89,62 @@ namespace OriginalGame0
             }
 
             //Level 1 walls
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 lvl1Walls.Add(new Wall(new Vector2(228, 38 * i + 38), 0));
-                lvl1Walls.Add(new Wall(new Vector2(492, 297 + i * 38), 0));
+                lvl1Walls.Add(new Wall(new Vector2(492, 326 + i * 38), 0));
+            }
+            //Level 2 Walls
+            for (int i = 0; i < 6; i++)
+            {
+                lvl2Walls.Add(new Wall(new Vector2(i * 38 + 380, 0), 0));
+                lvl2Walls.Add(new Wall(new Vector2(i * 38 + 380, 440), 0));
+                lvl2Walls.Add(new Wall(new Vector2(452, 137 + i * 38), 0));
+            }
+            for (int i = 0; i < 12; i++)
+            {
+                lvl2Walls.Add(new Wall(new Vector2(805, 38 * i + 38), 0));
+
+            }
+            //Level 3 Walls
+            for (int i = 0; i < 12; i++)
+            {
+                lvl3Walls.Add(new Wall(new Vector2(456, 38 * i + 38), 0));
+            
             }
 
             #endregion level walls
+        }
+
+        public void CheckArrowBounce(Wall wall, Arrow arrowT)
+        {
+            if (wall.wallBounds.CollidesWith(arrowT.arrowBounds))
+            {
+                float angle = (float)Math.Atan2(wall.wallPosition.Y + 19.5 - arrowT.arrowBounds.Y, wall.wallPosition.X + 19.5 - arrowT.arrowBounds.X);
+                Debug.WriteLine(MathHelper.ToDegrees(angle));
+                angle = MathHelper.ToDegrees(angle);
+                if (angle > 45 && angle < 135)
+                {
+                    arrowT.arrowVelocity.Y *= -1;
+                }
+                else if (angle >= 135 || angle <= -135)
+                {
+                    arrowT.arrowVelocity.X *= -1;
+                }
+                else if (angle <= 45 && angle >= -45)
+                {
+                    arrowT.arrowVelocity.X *= -1;
+                }
+                else if (angle < -45 && angle > -135)
+                {
+                    arrowT.arrowVelocity.Y *= -1;
+                }
+
+
+                //Vector2 diff = new Vector2((wall.wallPosition.X + 19.5f) - arrowT.arrowPos.X, (wall.wallPosition.Y + 35.5f) - arrowT.arrowPos.Y);
+
+
+            }
         }
 
         /// <summary>
@@ -104,8 +156,6 @@ namespace OriginalGame0
             mousePos = new Vector2(currentMouseState.X, currentMouseState.Y);
             direction = mousePos - Position;
             rotation = (float)Math.Atan2(direction.Y, direction.X);
-
-            Debug.WriteLine(rotation);
 
             slimeSprite.Update(gameTime);
 
@@ -144,78 +194,71 @@ namespace OriginalGame0
             //arrowPos += arrowVelocity;
             //Debug.WriteLine("X: "+arrowPos.X + " Y: " + arrowPos.Y);
 
-
-            //I used a for loop to be able to manipulate the List while iterating through it
-            //and decided not to swap back to a foreach loop.
-            for(int i = 0; i < arrowList.Count(); i++)
+            foreach (Arrow arrow in arrowList)
             {
-                arrowList[i].Update(gameTime);
+                {
+                    arrow.Update(gameTime);
 
-                if(!slimeSprite.Killed && slimeSprite.Bounds.CollidesWith(arrowList[i].arrowBounds))
-                {
-                    arrowList[i].enable = false;
-                    slimeSprite.Killed = true;
-                    Death.Play();
-                }
-                if (level == 1 || level == 3)
-                {
-                    foreach (Wall wall in baseWalls)
+                    if (!slimeSprite.Killed && slimeSprite.Bounds.CollidesWith(arrow.arrowBounds))
                     {
-                        if (wall.wallBounds.CollidesWith(arrowList[i].arrowBounds))
+                        arrow.arrowBounds.X = 1000;
+                        arrow.enable = false;
+                        slimeSprite.Killed = true;
+                        Death.Play();
+                        Task.Run(async () =>
                         {
-                            float angle = (float)Math.Atan2(wall.wallPosition.Y + 20 - arrowList[i].arrowPos.Y, wall.wallPosition.X + 20 - arrowList[i].arrowPos.X);
-                            //Debug.WriteLine(angle);
-                            if (angle > 0.7853f && angle < 2.3561)
+                            await Delay(2000);
+
+                            level++;
+                            slimeSprite.Killed = false;
+                            foreach(Arrow arrow in arrowList)
                             {
-                                arrowList[i].arrowVelocity.Y *= -1;
+                                arrow.enable = false;
                             }
-                            else if (angle >= 2.3561 || angle <= -2.3561)
-                            {
-                                arrowList[i].arrowVelocity.X *= -1;
-                            }
-                            else if (angle <= 0.7853f && angle >= -0.7853)
-                            {
-                                arrowList[i].arrowVelocity.X *= -1;
-                            }
-                            else if (angle < -0.7853 && angle > -2.3561)
-                            {
-                                arrowList[i].arrowVelocity.Y *= -1;
-                            }
+                        });
+                    }
+
+                    if (level == 1 || level == 3)
+                    {
+                        foreach (Wall wall in baseWalls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 1)
+                    {
+                        foreach (Wall wall in lvl1Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 2)
+                    {
+                        foreach (Wall wall in lvl2Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 3)
+                    {
+                        foreach (Wall wall in lvl3Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                        if(arrow.arrowPos.X <= -100)
+                        {
+                            arrow.arrowPos.X = 900;
                         }
                     }
                 }
-                if (level == 1)
-                {
-                    foreach (Wall wall in lvl1Walls)
-                    {
-                        if (wall.wallBounds.CollidesWith(arrowList[i].arrowBounds))
-                        {
-                            float angle = (float)Math.Atan2(wall.wallPosition.Y + 20 - arrowList[i].arrowPos.Y, wall.wallPosition.X + 20 - arrowList[i].arrowPos.X);
-                            //Debug.WriteLine(angle);
-                            if (angle > 0.7853f && angle < 2.3561)
-                            {
-                                arrowList[i].arrowVelocity.Y *= -1;
-                            }
-                            else if (angle >= 2.3561 || angle <= -2.3561)
-                            {
-                                arrowList[i].arrowVelocity.X *= -1;
-                            }
-                            else if (angle <= 0.7853f && angle >= -0.7853)
-                            {
-                                arrowList[i].arrowVelocity.X *= -1;
-                            }
-                            else if (angle < -0.7853 && angle > -2.3561)
-                            {
-                                arrowList[i].arrowVelocity.Y *= -1;
-                            }
-                        }
-                    }
-                }
-
             }
 
-
             previousMouseState = currentMouseState;
+        }
+
+        private async Task Delay(int milliseconds)
+        {
+            await Task.Delay(milliseconds);
         }
 
         /// <summary>
@@ -259,10 +302,7 @@ namespace OriginalGame0
 
 
             spriteBatch.Draw(ranger, Position, source, Color.White, rotation, new Vector2(8,16), 2.0f, SpriteEffects.None, 0);
-            foreach (Arrow arrow in arrowList)
-            {
-                arrow.Draw(gameTime, spriteBatch, arrowTexture);
-            }
+
             if (level == 1 || level == 3)
             {
                 foreach (Wall wall in baseWalls)
@@ -291,8 +331,15 @@ namespace OriginalGame0
                     wall.Draw(gameTime, spriteBatch, wallTexture);
                 }
             }
-
-            //spriteBatch.Draw(arrow, arrowPos, null, Color.White, arrowRotation, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+            else
+            {
+                spriteBatch.DrawString(alkhemikal, "Thank You For Playing", new Vector2(206, 200), Color.Red, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+            }
+            foreach (Arrow arrow in arrowList)
+            {
+                arrow.Draw(gameTime, spriteBatch, arrowTexture);
+            }
+            spriteBatch.DrawString(alkhemikal, "Esc to exit", new Vector2(6, 4), Color.Red, 0, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0);
             slimeSprite.Draw(gameTime, spriteBatch);
 
         }

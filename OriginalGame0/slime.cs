@@ -29,7 +29,7 @@ namespace OriginalGame0
 
         private BoundingCircle bounds;
 
-        private int animated = 0;
+        public int animated = 0;
         private bool started = false;
 
         float currentAlpha = 1.0f;
@@ -54,7 +54,7 @@ namespace OriginalGame0
         public Slime(Vector2 position)
         {
             this.position = position;
-            this.bounds = new BoundingCircle(position + new Vector2(8, 8), 16);
+            this.bounds = new BoundingCircle(position + new Vector2(18, 24), 36);
         }
 
         /// <summary>
