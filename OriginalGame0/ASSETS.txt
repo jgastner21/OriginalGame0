@@ -21,4 +21,4 @@ Content/RPG_Essentials_Free/ created by leohpaz (https://leohpaz.itch.io/minifan
 
 Content/arrowRelease.Wav created in Bfxr, by me
 
-//SOME OF THESE ARE UNUSED FOR NOW
+//SOME OF THESE ARE UNUSED
