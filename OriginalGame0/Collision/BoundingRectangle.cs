@@ -47,6 +47,11 @@ namespace OriginalGame0.Collision
         {
             return CollisionHelper.Collides(this, other);
         }
+
+        public bool CollidesWith(BoundingCircle other)
+        {
+            return CollisionHelper.Collides(other, this);
+        }
     }
 }
     

@@ -24,14 +24,14 @@ namespace OriginalGame0
         public Vector2 arrowPos;
         public Vector2 arrowVelocity;
         public float arrowRotation;
-        public BoundingRectangle arrowBounds;
+        public BoundingCircle arrowBounds;
 
         public Arrow(Vector2 pos, Vector2 velocity, float rotation)
         {
             arrowPos = pos;
             arrowVelocity = velocity;
             arrowRotation = rotation;
-            arrowBounds = new BoundingRectangle(arrowPos, 10, 10);
+            arrowBounds = new BoundingCircle(arrowPos, 1);
         }
 
 
@@ -45,8 +45,8 @@ namespace OriginalGame0
             if (arrowPos.X >= 1000) enable = false;
             arrowPos += arrowVelocity;
             arrowRotation = (float)Math.Atan2(arrowVelocity.Y, arrowVelocity.X);
-            arrowBounds.X = arrowPos.X + (arrowVelocity.X);
-            arrowBounds.Y = arrowPos.Y + (arrowVelocity.Y);
+            arrowBounds.Center.X = arrowPos.X;
+            arrowBounds.Center.Y = arrowPos.Y;
 
         }
 
@@ -59,7 +59,7 @@ namespace OriginalGame0
         {
             if (enable)
             {
-                spriteBatch.Draw(arrowTexture, arrowPos, new Rectangle(7, 4, 20, 8), Color.White, arrowRotation + (float)Math.PI, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+                spriteBatch.Draw(arrowTexture, arrowPos, new Rectangle(7, 4, 20, 8), Color.White, arrowRotation + (float)Math.PI, new Vector2(4, 4), 1.0f, SpriteEffects.None, 0);
             }
 
         }

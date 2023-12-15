@@ -54,7 +54,7 @@ namespace OriginalGame0
         public Slime(Vector2 position)
         {
             this.position = position;
-            this.bounds = new BoundingCircle(position + new Vector2(18, 24), 36);
+            this.bounds = new BoundingCircle(position + new Vector2(18, 24), 24);
         }
 
         /// <summary>

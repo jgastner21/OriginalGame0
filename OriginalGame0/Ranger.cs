@@ -45,6 +45,10 @@ namespace OriginalGame0
         private List<Wall> lvl1Walls = new List<Wall>();
         private List<Wall> lvl2Walls = new List<Wall>();
         private List<Wall> lvl3Walls = new List<Wall>();
+        private List<Wall> lvl4Walls = new List<Wall>();
+        private List<Wall> lvl5Walls = new List<Wall>();
+        private List<Wall> lvl6Walls = new List<Wall>();
+        private List<Wall> lvl7Walls = new List<Wall>();
 
 
         private Texture2D arrowTexture;
@@ -84,33 +88,67 @@ namespace OriginalGame0
             //Side walls
             for (int i = -1; i < 24; i++)
             {
-                baseWalls.Add(new Wall(new Vector2(i * 38, 0), 0));
-                baseWalls.Add(new Wall(new Vector2(i * 38, 440), 0));
+                baseWalls.Add(new Wall(new Vector2(i * 39, 0), 0));
+                baseWalls.Add(new Wall(new Vector2(i * 39, 440), 0));
             }
 
             //Level 1 walls
             for (int i = 0; i < 6; i++)
             {
-                lvl1Walls.Add(new Wall(new Vector2(228, 38 * i + 38), 0));
-                lvl1Walls.Add(new Wall(new Vector2(492, 326 + i * 38), 0));
+                lvl1Walls.Add(new Wall(new Vector2(228, 39 * i + 39), 0));
+                lvl1Walls.Add(new Wall(new Vector2(468, 273 + i * 39), 0));
             }
             //Level 2 Walls
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 9; i++)
             {
-                lvl2Walls.Add(new Wall(new Vector2(i * 38 + 380, 0), 0));
-                lvl2Walls.Add(new Wall(new Vector2(i * 38 + 380, 440), 0));
-                lvl2Walls.Add(new Wall(new Vector2(452, 137 + i * 38), 0));
+                lvl2Walls.Add(new Wall(new Vector2(195, 39 * i), 0));
+                lvl2Walls.Add(new Wall(new Vector2(312, 156 + i * 39), 0));
+                lvl2Walls.Add(new Wall(new Vector2(429, 39 * i), 0));
             }
-            for (int i = 0; i < 12; i++)
-            {
-                lvl2Walls.Add(new Wall(new Vector2(805, 38 * i + 38), 0));
 
-            }
             //Level 3 Walls
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 5; i++)
             {
-                lvl3Walls.Add(new Wall(new Vector2(456, 38 * i + 38), 0));
-            
+                lvl3Walls.Add(new Wall(new Vector2(400, 190 + i * 39), 0));
+            }
+
+            //Level 4 Walls
+            for (int i = 0; i < 5; i++)
+            {
+                lvl4Walls.Add(new Wall(new Vector2(500, 190 + i * 39), 0));
+            }
+            lvl4Walls.Add(new Wall(new Vector2(100, 429), 0));
+            lvl4Walls.Add(new Wall(new Vector2(242, 0), 0));
+            lvl4Walls.Add(new Wall(new Vector2(281, 0), 0));
+            lvl4Walls.Add(new Wall(new Vector2(344, 429), 0));
+            lvl4Walls.Add(new Wall(new Vector2(383, 429), 0));
+            lvl4Walls.Add(new Wall(new Vector2(494, 0), 0));
+            lvl4Walls.Add(new Wall(new Vector2(533, 0), 0));
+
+            //Level 5 Walls
+            for (int i = 0; i < 5; i++)
+            {
+                lvl5Walls.Add(new Wall(new Vector2(i * 39 + 400, 0), 0));
+                lvl5Walls.Add(new Wall(new Vector2(i * 39 + 400, 440), 0));
+                lvl5Walls.Add(new Wall(new Vector2(520, 170 + i * 39), 0));
+                lvl5Walls.Add(new Wall(new Vector2(801, 39 * i + 170), 0));
+            }
+
+            //Level 6 Walls
+            for (int i = 0; i < 9; i++)
+            {
+                lvl6Walls.Add(new Wall(new Vector2(195, 39 * i), 0));
+                lvl6Walls.Add(new Wall(new Vector2(312, 156 + i * 39), 0));
+                lvl6Walls.Add(new Wall(new Vector2(429, 39 * i), 0));
+                lvl6Walls.Add(new Wall(new Vector2(546, 156 + i * 39), 0));
+                lvl6Walls.Add(new Wall(new Vector2(663, 39 * i), 0));
+            }
+
+            //Level 7 Walls
+            for (int i = 0; i < 13; i++)
+            {
+                lvl7Walls.Add(new Wall(new Vector2(456, 39 * i), 0));
+
             }
 
             #endregion level walls
@@ -120,29 +158,30 @@ namespace OriginalGame0
         {
             if (wall.wallBounds.CollidesWith(arrowT.arrowBounds))
             {
-                float angle = (float)Math.Atan2(wall.wallPosition.Y + 19.5 - arrowT.arrowBounds.Y, wall.wallPosition.X + 19.5 - arrowT.arrowBounds.X);
-                Debug.WriteLine(MathHelper.ToDegrees(angle));
+                float angle = (float)Math.Atan2(wall.wallPosition.Y + 19.5 - arrowT.arrowBounds.Center.Y, wall.wallPosition.X + 19.5 - arrowT.arrowBounds.Center.X);
                 angle = MathHelper.ToDegrees(angle);
                 if (angle > 45 && angle < 135)
                 {
                     arrowT.arrowVelocity.Y *= -1;
+
+                    arrowT.arrowPos.Y = wall.wallPosition.Y - 2;
                 }
                 else if (angle >= 135 || angle <= -135)
                 {
                     arrowT.arrowVelocity.X *= -1;
+                    arrowT.arrowPos.X = wall.wallPosition.X + 41;
                 }
                 else if (angle <= 45 && angle >= -45)
                 {
                     arrowT.arrowVelocity.X *= -1;
+                    arrowT.arrowPos.X = wall.wallPosition.X - 2;
                 }
                 else if (angle < -45 && angle > -135)
                 {
                     arrowT.arrowVelocity.Y *= -1;
+                    arrowT.arrowPos.Y = wall.wallPosition.Y + 41;
                 }
-
-
-                //Vector2 diff = new Vector2((wall.wallPosition.X + 19.5f) - arrowT.arrowPos.X, (wall.wallPosition.Y + 35.5f) - arrowT.arrowPos.Y);
-
+                arrowT.arrowPos += arrowVelocity;
 
             }
         }
@@ -191,8 +230,6 @@ namespace OriginalGame0
                 }
             }
 
-            //arrowPos += arrowVelocity;
-            //Debug.WriteLine("X: "+arrowPos.X + " Y: " + arrowPos.Y);
 
             foreach (Arrow arrow in arrowList)
             {
@@ -201,7 +238,7 @@ namespace OriginalGame0
 
                     if (!slimeSprite.Killed && slimeSprite.Bounds.CollidesWith(arrow.arrowBounds))
                     {
-                        arrow.arrowBounds.X = 1000;
+                        arrow.arrowBounds.Center.X = 1000;
                         arrow.enable = false;
                         slimeSprite.Killed = true;
                         Death.Play();
@@ -218,7 +255,7 @@ namespace OriginalGame0
                         });
                     }
 
-                    if (level == 1 || level == 3)
+                    if (level == 1 || level == 2 || level == 3 || level == 6)
                     {
                         foreach (Wall wall in baseWalls)
                         {
@@ -245,11 +282,41 @@ namespace OriginalGame0
                         {
                             CheckArrowBounce(wall, arrow);
                         }
-                        if(arrow.arrowPos.X <= -100)
+
+                    }
+                    if (level == 4)
+                    {
+                        foreach (Wall wall in lvl4Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 5)
+                    {
+                        foreach (Wall wall in lvl5Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 6)
+                    {
+                        foreach (Wall wall in lvl6Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                    }
+                    if (level == 7)
+                    {
+                        foreach (Wall wall in lvl7Walls)
+                        {
+                            CheckArrowBounce(wall, arrow);
+                        }
+                        if (arrow.arrowPos.X <= -100)
                         {
                             arrow.arrowPos.X = 900;
                         }
                     }
+
                 }
             }
 
@@ -303,7 +370,7 @@ namespace OriginalGame0
 
             spriteBatch.Draw(ranger, Position, source, Color.White, rotation, new Vector2(8,16), 2.0f, SpriteEffects.None, 0);
 
-            if (level == 1 || level == 3)
+            if (level == 1 || level == 2 || level == 6)
             {
                 foreach (Wall wall in baseWalls)
                 {
@@ -327,6 +394,34 @@ namespace OriginalGame0
             else if (level == 3)
             {
                 foreach (Wall wall in lvl3Walls)
+                {
+                    //wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 4)
+            {
+                foreach (Wall wall in lvl4Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 5)
+            {
+                foreach (Wall wall in lvl5Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 6)
+            {
+                foreach (Wall wall in lvl6Walls)
+                {
+                    wall.Draw(gameTime, spriteBatch, wallTexture);
+                }
+            }
+            else if (level == 7)
+            {
+                foreach (Wall wall in lvl7Walls)
                 {
                     wall.Draw(gameTime, spriteBatch, wallTexture);
                 }
